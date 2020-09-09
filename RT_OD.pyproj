@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7b2b9159-0b87-4bcc-a367-173f60afb7c3}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>
+    </StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Backup Copy May 5\Alert_image.jpg" />
+    <Content Include="Backup Copy May 5\img.jpg" />
+    <Content Include="Backup Copy May 5\MobileNetSSD_deploy.prototxt.txt" />
+    <Content Include="Documentation\Compile OpenCV Notes.txt" />
+    <Content Include="Documentation\How to configure your NVIDIA Jetson Nano for Computer Vision and Deep Learning - PyImageSearch.url" />
+    <Content Include="Documentation\How to use OpenCV%27s -dnn- module with NVIDIA GPUs, CUDA, and cuDNN - PyImageSearch.url" />
+    <Content Include="Documentation\https---yangcha.github.io-iview-iview.html.url" />
+    <Content Include="Documentation\jtop.url" />
+    <Content Include="Documentation\OpenCV - Stream video to web browser-HTML page - PyImageSearch.url" />
+    <Content Include="Documentation\opencv-dnn-gpu.zip" />
+    <Content Include="Documentation\Solved- How to get url with .jpg end and what works with [... - Dropbox Community.url" />
+    <Content Include="Documentation\Ubuntu Shortcut and Launcher\Creating a `.desktop` file in Ubuntu that launches a Python script · GitHub.url" />
+    <Content Include="Documentation\Ubuntu Shortcut and Launcher\How to add a shell script to launcher as shortcut - Ask Ubuntu.url" />
+    <Content Include="Documentation\Ubuntu Shortcut and Launcher\[ubuntu] 18.04 .desktop unstrusted application launcher [Archive] - Ubuntu Forums.url" />
+    <Content Include="Documentation\upload file to my dropbox from python script - Stack Overflow.url" />
+    <Content Include="img.jpg" />
+    <Content Include="Jetson Nano\Launcher Files\driveway2.desktop" />
+    <Content Include="Jetson Nano\Launcher Files\driveway2.sh" />
+    <Content Include="Jetson Nano\Launcher Files\FrontDoor.desktop" />
+    <Content Include="Jetson Nano\Launcher Files\frontdoor.sh" />
+    <Content Include="MobileNetSSD_deploy.prototxt.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Backup Copy May 5\Email.py" />
+    <Compile Include="Backup Copy May 5\real_time_object_detection.py" />
+    <Compile Include="Backup Copy May 5\RT_OD.py" />
+    <Compile Include="Backup Copy May 5\SMS.py" />
+    <Compile Include="Backup Copy May 5\SMS_MMS.py" />
+    <Compile Include="ConfigValues.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DropBox.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Email.py" />
+    <Compile Include="AlertTime.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Old Code Archive\OpenCL_Test.py" />
+    <Compile Include="Old Code Archive\real_time_object_detection.py" />
+    <Compile Include="Old Code Archive\RT_OD_D1.py" />
+    <Compile Include="Old Code Archive\RT_OD_D2.py" />
+    <Compile Include="Old Code Archive\RT_OD_FD.py" />
+    <Compile Include="Old Code Archive\RT_OD_OfflineVideo.py" />
+    <Compile Include="Old Code Archive\testing.py" />
+    <Compile Include="RT_OD.py" />
+    <Compile Include="SMS.py" />
+    <Compile Include="MMS.py" />
+    <Compile Include="Test_Module_Function.py">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Backup Copy May 5" />
+    <Folder Include="Documentation\" />
+    <Folder Include="Documentation\Ubuntu Shortcut and Launcher\" />
+    <Folder Include="Jetson Nano\" />
+    <Folder Include="Jetson Nano\Launcher Files\" />
+    <Folder Include="Old Code Archive\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+</Project>

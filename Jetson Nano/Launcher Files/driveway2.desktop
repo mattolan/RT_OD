@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Terminal=true
+Name=Driveway2
+Exec=bash /home/matt/Desktop/driveway2.sh
