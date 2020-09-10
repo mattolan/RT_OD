@@ -1,0 +1,57 @@
+Installation
+
+This document will walk you through setting up this project and configuring the components required
+The core operations of this program "Object Recognition" is derived from following the Blog Lessons of Adrian Rosebrock.  
+
+Adrian, his blog, Lessons and related information can be located at https://www.pyimagesearch.com/ Adrian's site is a wealth of information and educational
+materials for anyone interested in learning more about Machine learning based Object Recognition.
+
+Components
+	1. Real Time Object Detection - Core Module RT_OD.py
+		This is the core of this program where all the magic happens
+	2. Email Messaging
+		This module handles the sending of email alerts if configured
+		An Email account is required that supports basic authentication. basic authentication isn't great and is being phased out by many providers
+		you milage may vary with this feature.  for example with gmail https://ugtechmag.com/enable-basic-authentication-gmail-account/ even once enabled 
+		I find gmail resets this value to off stopping the use of email from this application after a few days. I prefer MMS messaging personally
+	3. SMS Messaging
+		This module handles the sending of SMS (Text Messages) messages via Twilio if configure. 
+		This function reaquires a Paid messaging subscription from Twilio https://www.twilio.com/messaging
+		You must generate an API key https://www.twilio.com/docs/iam/keys/api-key-resource and https://www.twilio.com/console/project/api-keys
+		You must also register a phone number with Twilio to be used to send messages from
+	4. MMS Messaging
+		This module handles the sending of MMS (Text Messages with attached images) messages via Twilio if configure. 
+		This function requires a Paid messaging subscription from Twilio https://www.twilio.com/messaging
+		This function also requires a DropBox account in order to upload, store and provide a publicly accessible URL for Twilio to grab the images from
+		You must generate an API key https://www.twilio.com/docs/iam/keys/api-key-resource and https://www.twilio.com/console/project/api-keys
+		You must also register a phone number with Twilio to be used to send messages from
+		SMS and MMS use the same Twilio account and information. Registering once will allow both modules to function
+		$20 of credit loaded onto Twilio covers my MMS notifications for approx 6-8 weeks. Approx 600 MMS Messages. However this will depend on how many notifications your system generates
+	5. DropBox
+		This module is used to upload and store detection event images. It is also used to provide publicly accessible URL's for use with Twilio for sending MMS messages
+		A Free DropBox account is sufficient https://www.dropbox.com/
+		You must generate a dropbox API key for use with this app http://99rabbits.com/get-dropbox-access-token/
+
+Windows Setup
+	1. Download and install Anaconda
+		Download Link https://www.anaconda.com/products/individual#windows
+		Installation Instructions https://docs.anaconda.com/anaconda/install/windows/ Pretty much leave default and just hit next, next, finish
+		Anaconda is a data science tool kit that will allow us to create a virtual envronment on windows machines to run python and linux packages. 
+		It is free for personal home use
+	2. Create a virtual environment in anaconda from the windows command prompt
+		open the command prompt
+		issue the following command - "conda create --name opencv-env python=3.7" to create a virtual python environment named opencv-env
+	3. Activate the environment from the command prompt with the command "activate opencv-env"
+		Note all work needs to be done in the "opencv-env" virtual envronment.  Everytime you want to run or work on the project you must load this envronment
+		or your project will not funtion due to missing dependencies
+	4. continue and run the linux setup steps from within this virtual environment
+
+
+Linux Setup
+
+Optional Linux GPU Setup (Nvidia Cuda)
+
+Nvidia Jetson Nano Setup
+	1. https://www.pyimagesearch.com/2020/03/25/how-to-configure-your-nvidia-jetson-nano-for-computer-vision-and-deep-learning/
+
+Operation
