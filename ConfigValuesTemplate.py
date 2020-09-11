@@ -2,14 +2,14 @@
 #update the below contect with your account credentials and keys
 
 #Drop Box Config
-DropBoxAPIKey = "" #only required if using MMS
+DropBoxAPIKey = '' #only required if using MMS
 
 #Email Config
 SMTPPort = 587 #SMPT Server Port
-SMTPServer = "smtp.gmail.com" #SMTP Server Address
-SMTPLogin = "" # paste your login 
-SMTPPassword = "" #paste your password 
-SMTPToAddress = "" #destination address Email will be sent to
+SMTPServer = 'smtp.gmail.com' #SMTP Server Address
+SMTPLogin = '' # paste your login 
+SMTPPassword = '' #paste your password 
+SMTPToAddress = '' #destination address Email will be sent to
 MailEnabled = 'false' #If set to false the other email config values can be left blank
 
 #Twilio MMS & SMS Config
@@ -18,6 +18,9 @@ TwilioAuthToken = ''
 TwilioSourcePhone = '+' + '<%Source Phone Number%>'  #phone number is required to have '+' appended to the start
 TwilioSMSEnabled = 'false' #setting to false will still allow SMS to be uses as a failback to MMS
 TwilioMMSEnabled = 'true' #if SMS and MMS are set to false the other email config values can be left blanks
+
+#Destination number for MMS & SMS notifications
+AlertPhoneDestination = ['+1' + '3335557777', '+1' + '1112223333'] #list comma seperated add phone numbers as desired for notification, phone number is required to have '+1' appended to the start
 
 #RT_OD Real Time Object Detection Config
 
@@ -31,9 +34,6 @@ RTODFrameSleep = 0.25
 #Detection Percentage - used to filter out eronious false detections that occur the closer to 100% of the detection area the more probable a
 #detection is a false alert. 
 DectectionPercentage = 75
-
-#Destination number for MMS & SMS notifications
-AlertPhoneDestination = ['+' + '', '+' + ''] #list , seperated add phone numbers are desired, phone number is required to have '+' appended to the start
 
 #Definitions to return the desired config values from above
 def ReturnDropBoxAPIKey():
