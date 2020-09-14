@@ -210,7 +210,7 @@ while StreamLoaded == "False":
 					else:
 						if("person" in label):
 							#if camera is in cool down period after a detection and the person remains in frame extend the cool down to prevent further alarms
-							SMSAlertDelay = SMSAlertDelay + datetime.timedelta(seconds=0.1)
+							SMSAlertDelay = SMSAlertDelay + datetime.timedelta(seconds=0.25)
 							print("Person still in frame, Extending Cool Down")
 
 			# show the output frame
