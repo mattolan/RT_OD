@@ -24,30 +24,32 @@ materials for anyone interested in learning more about Machine learning based Ob
 This Object detection software requires an RTSP camera feed in order to function. Low quality camera feeds work best as they require the lease amount of CPU time
 
 Components and Requirements
-	1. Real Time Object Detection - Core Module RT_OD.py
-		This is the core of this program where all the magic happens
-	2. Email Messaging
-		This module handles the sending of email alerts if configured
-		An Email account is required that supports basic authentication. basic authentication isn't great and is being phased out by many providers
-		you milage may vary with this feature.  for example with gmail https://ugtechmag.com/enable-basic-authentication-gmail-account/ even once enabled 
-		I find gmail resets this value to off stopping the use of email from this application after a few days. I prefer MMS messaging personally
-	3. SMS Messaging
-		This module handles the sending of SMS (Text Messages) messages via Twilio if configure. 
-		This function reaquires a Paid messaging subscription from Twilio https://www.twilio.com/messaging
-		You must generate an API key https://www.twilio.com/docs/iam/keys/api-key-resource and https://www.twilio.com/console/project/api-keys
-		You must also register a phone number with Twilio to be used to send messages from
-	4. MMS Messaging
-		This module handles the sending of MMS (Text Messages with attached images) messages via Twilio if configure. 
-		This function requires a Paid messaging subscription from Twilio https://www.twilio.com/messaging
-		This function also requires a DropBox account in order to upload, store and provide a publicly accessible URL for Twilio to grab the images from
-		You must generate an API key https://www.twilio.com/docs/iam/keys/api-key-resource and https://www.twilio.com/console/project/api-keys
-		You must also register a phone number with Twilio to be used to send messages from
-		SMS and MMS use the same Twilio account and information. Registering once will allow both modules to function
-		$20 of credit loaded onto Twilio covers my MMS notifications for approx 6-8 weeks. Approx 600 MMS Messages. However this will depend on how many notifications your system generates
-	5. DropBox
-		This module is used to upload and store detection event images. It is also used to provide publicly accessible URL's for use with Twilio for sending MMS messages
-		A Free DropBox account is sufficient https://www.dropbox.com/
-		You must generate a dropbox API key for use with this app http://99rabbits.com/get-dropbox-access-token/
+
+1. Real Time Object Detection - Core Module RT_OD.py
+	This is the core of this program where all the magic happens
+2. Email Messaging
+	This module handles the sending of email alerts if configured
+	An Email account is required that supports basic authentication. basic authentication isn't great and is being phased out by many providers
+	you milage may vary with this feature.  for example with gmail https://ugtechmag.com/enable-basic-authentication-gmail-account/ even once enabled 
+	I find gmail resets this value to off stopping the use of email from this application after a few days. I prefer MMS messaging personally
+3. SMS Messaging
+	This module handles the sending of SMS (Text Messages) messages via Twilio if configure. 
+	This function reaquires a Paid messaging subscription from Twilio https://www.twilio.com/messaging
+	You must generate an API key https://www.twilio.com/docs/iam/keys/api-key-resource and https://www.twilio.com/console/project/api-keys
+	You must also register a phone number with Twilio to be used to send messages from
+4. MMS Messaging
+	This module handles the sending of MMS (Text Messages with attached images) messages via Twilio if configure. 
+	This function requires a Paid messaging subscription from Twilio https://www.twilio.com/messaging
+	This function also requires a DropBox account in order to upload, store and provide a publicly accessible URL for Twilio to grab the images from
+	You must generate an API key https://www.twilio.com/docs/iam/keys/api-key-resource and https://www.twilio.com/console/project/api-keys
+	You must also register a phone number with Twilio to be used to send messages from
+	SMS and MMS use the same Twilio account and information. Registering once will allow both modules to function
+	$20 of credit loaded onto Twilio covers my MMS notifications for approx 6-8 weeks. Approx 600 MMS Messages. However this will depend on how many notifications your
+	system generates
+5. DropBox
+	This module is used to upload and store detection event images. It is also used to provide publicly accessible URL's for use with Twilio for sending MMS messages
+	A Free DropBox account is sufficient https://www.dropbox.com/
+	You must generate a dropbox API key for use with this app http://99rabbits.com/get-dropbox-access-token/
 
 Windows Setup
 	1. Download and install Anaconda
