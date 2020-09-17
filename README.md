@@ -1,3 +1,5 @@
+![Image of minion](https://github.com/mattolan/RT_OD/img.jpg)
+
 This project is an object detection and alerting program.
 
 It accepts an RTSP feed from a security camera and enhances the camera feed by detection people inside the feed. If a person is detected the application can send a text message to a defined phone number with the detection image attached.  For example if you are monitoring the RTSP feed of a camera by a an entrance door you can get an alert sent to a cell phone (or multiple cell phones) when a person walks up to the door.
