@@ -101,6 +101,7 @@ Launching the Object Detection Software
 	2. If running on windows activate the virtual environment with the following command
 		activate opencv-env
 	3. launch the software with the following example command
+		
 		python RT_OD.py -v "rtsp://192.168.1.1:7447/5cc263923cc_2" -n "Front Door Camera"  -rsy 2 -rsx 125 -rey 358 -rex 638 -ac 5 -asph 22 -aspm 00 -aeph 7 -aepm 00
 
 		The command command can be modified to suit your needs.
