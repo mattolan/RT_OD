@@ -1,5 +1,18 @@
 This project is an object detection and alerting program.
 
+It accepts an RTSP feed from a security camera and enhances the camera feed by detection people inside the feed. If a person is detected the application can send a text message to a defined phone number with the detection image attached.  For example if you are monitoring the RTSP feed of a camera by a an entrance door you can get an alert sent to a cell phone (or multiple cell phones) when a person walks up to the door.
+
+The program supports defining a detection box over the RTSP feed so that only people with the defined area trigger a detection. For example if the camera covers the street and a box is defined over the front door step it will only alert once a person is on the front door step.
+
+It also supports setting a time period where alerts can be send. For example at night only.
+
+This program will run on Windows, Linux, Nvidia Jetson Nano or Raspberry Pi 4. 
+
+Alerting depends on having the following 3rd party accounts connected via API Keys
+- Twilio (Pay as you go Account)
+- DropBox (Free account or Paid)
+- Email
+
 Installation
 
 This document will walk you through setting up this project and configuring the components required
@@ -10,7 +23,7 @@ materials for anyone interested in learning more about Machine learning based Ob
 
 This Object detection software requires an RTSP camera feed in order to function. Low quality camera feeds work best as they require the lease amount of CPU time
 
-Components
+Components and Requirements
 	1. Real Time Object Detection - Core Module RT_OD.py
 		This is the core of this program where all the magic happens
 	2. Email Messaging
