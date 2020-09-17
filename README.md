@@ -1,4 +1,4 @@
-![Image of minion](https://github.com/mattolan/RT_OD/img.jpg)
+![Image of minion](https://github.com/mattolan/RT_OD/blob/master/img.jpg?raw=true)
 
 This project is an object detection and alerting program.
 
