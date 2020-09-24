@@ -75,6 +75,20 @@ Linux Setup
 		pip install dropbox
 		pip install opencv-contrib-python
 
+		If installing on Raspbery Pi use these commands instead of the above
+			pip install setuptools
+			pip install imutils
+			pip install numpy
+			pip install twilio
+			pip install dropbox
+			pip install opencv-contrib-python
+			pip3 install opencv-contrib-python==4.1.0.25
+			sudo apt install libhdf5-100
+			sudo apt install libatlas3-base
+			sudo apt install libjasper1
+			sudo apt install libqtgui4
+			sudo atp install libqt4-test
+
 	3. Download the Github repository https://github.com/mattolan/RT_OD as a ZIP file
 	4. Extract the contents of the Zip file to a directory of your choosing.
 	6. You are now ready to launch the software.
