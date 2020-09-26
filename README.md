@@ -1,8 +1,13 @@
-![Image of minion](https://github.com/mattolan/RT_OD/blob/master/img.jpg?raw=true)
-
 This project is an object detection and alerting program.
 
-It accepts an RTSP feed from a security camera and enhances the camera feed by detection people inside the feed. If a person is detected the application can send a text message to a defined phone number with the detection image attached.  For example if you are monitoring the RTSP feed of a camera by a an entrance door you can get an alert sent to a cell phone (or multiple cell phones) when a person walks up to the door.
+It accepts an RTSP feed from a security camera and enhances the camera feed by detection people inside the feed. If a person is detected the application can send a text message to a defined phone number with the detection image attached.  For example if you are monitoring the RTSP feed of a camera by a an entrance door you can get an alert sent to a cell phone (or multiple cell phones) when a person walks up to the door. 
+
+Note these detections are not motion based or motion dependend. This system operates independend of traditional motion based detection and alerting. Hence it has a much lower false positive rate then motion based alerting. 
+
+![Delivery](https://github.com/mattolan/RT_OD/blob/master/Documentation/Images-GitHub/Delivery.jpg?raw=true)
+![Nigth](https://github.com/mattolan/RT_OD/blob/master/Documentation/Images-GitHub/Night%202.jpg?raw=true)
+![Night2](https://github.com/mattolan/RT_OD/blob/master/Documentation/Images-GitHub/Night.jpg?raw=true)
+
 
 The program supports defining a detection box over the RTSP feed so that only people with the defined area trigger a detection. For example if the camera covers the street and a box is defined over the front door step it will only alert once a person is on the front door step.
 
