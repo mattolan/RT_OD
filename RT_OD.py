@@ -67,7 +67,7 @@ CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat",
 	"bottle", "bus", "car", "cat", "chair", "cow", "diningtable",
 	"dog", "horse", "motorbike", "person", "pottedplant", "sheep",
 	"sofa", "train", "tvmonitor"]
-#only display this list of classes on images
+#only display this list of classes on the image windows
 ClassesToDisplay =["bicycle", "car", "cat",	"dog", "motorbike", "person", "pottedplant", "boat"]
 COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
 
@@ -160,22 +160,28 @@ while StreamLoaded == "False":
 					y = ROIStartY - 15 if ROIStartY - 15 > 15 else ROIStartY + 15
 					cv2.putText(frame, "Detection Zone", (ROIStartX, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
-					#alert for person detection
+					#alert for detection
 					#print(label)
-					if("person" in label and SMSAlertDelay < datetime.datetime.now() and is_time_between(StartAlerts, EndAlerts)):
+					ValidObjectDetected = 'false'
+					for vod in ConfigValues.ReturnAlertObjectType():
+						if(vod in label):
+							print(label + " Detected")
+							ValidObjectDetected = 'true'
+
+					if(ValidObjectDetected == 'true' and SMSAlertDelay < datetime.datetime.now() and is_time_between(StartAlerts, EndAlerts)):
 						print(label + " @ " + str(datetime.datetime.now()))
 
 						#Test for False Alarm by checking X Lenght of the detection area against the detection
 						print("")
 						print("Check for False Detection")
 						DetectionAreaXLength = args["ROIEX"] - args["ROISX"]
-						print(DetectionAreaXLength)
+						#print(DetectionAreaXLength)
 						DetectionEventXLength = endX - startX
-						print(DetectionEventXLength)
+						#print(DetectionEventXLength)
 						DectectionPercentage = DetectionEventXLength/DetectionAreaXLength*100
-						print(DectectionPercentage)
-						print("End Check")
-						print("")
+						#print(DectectionPercentage)
+						#print("End Check")
+						#print("")
 						#End Test
 				
 						if(DectectionPercentage < ConfigValues.ReturnDectectionPercentage()): #The closer to 100% the detection is the more likely it's a false alert. 
@@ -208,10 +214,10 @@ while StreamLoaded == "False":
 							print("False Detection Occured Detection Percentage: " + str(DectectionPercentage))
 							print("")
 					else:
-						if("person" in label):
+						if(ValidObjectDetected == 'true'):
 							#if camera is in cool down period after a detection and the person remains in frame extend the cool down to prevent further alarms
 							SMSAlertDelay = SMSAlertDelay + datetime.timedelta(seconds=0.5)
-							print("Person still in frame, Extending Cool Down")
+							print("Object still in frame, Extending Cool Down")
 
 			# show the output frame
 			cv2.imshow("Frame", frame)
