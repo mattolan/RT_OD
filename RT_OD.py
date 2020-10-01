@@ -1,11 +1,3 @@
-#Must be installed before running this script for the first time
-	#pip install setuptools
-	#pip install imutils
-	#pip install numpy
-	#pip install opencv-contrib-python
-	#pip install twilio
-	#pip install dropbox
-
 # import the necessary packages
 from imutils.video import VideoStream
 from imutils.video import FPS
@@ -24,6 +16,7 @@ from Email import Send_Mail
 from DropBox import UploadToDropBox
 from AlertTime import is_time_between
 import ConfigValues
+import FaceDetection
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
@@ -97,6 +90,7 @@ while StreamLoaded == "False":
 		#Set Date to prevent SMS Flood
 		#import datetime
 		SMSAlertDelay = datetime.datetime.now()
+		FaceDetectionDelay = datetime.datetime.now()
 
 		# loop over the frames from the video stream
 		print("[INFO] video stream loaded")
@@ -115,12 +109,22 @@ while StreamLoaded == "False":
 
 			# grab the frame dimensions and convert it to a blob
 			(h, w) = roi.shape[:2]
-			blob = cv2.dnn.blobFromImage(cv2.resize(roi, (300, 300)),
-				0.007843, (300, 300), 127.5)
+			#blob = cv2.dnn.blobFromImage(image, scalefactor=1.0, size, mean, swapRB=True)
+			blob = cv2.dnn.blobFromImage(cv2.resize(roi, (300, 300)),0.007843, (300, 300), 127.5)
+			#blob = cv2.dnn.blobFromImage(roi,1(300, 300), 127.5)
 			# pass the blob through the network and obtain the detections and
 			# predictions
 			net.setInput(blob)
 			detections = net.forward()
+
+			#Draw a box around the area being monitor for Objects
+			color = (255, 0, 0) # Blue color in BGR 
+			start_point = (ROIStartX, ROIStartY)
+			end_point = (ROIEndX, ROIEndY)
+			thickness = 2
+			frame = cv2.rectangle(frame, start_point, end_point, color, thickness)	
+			y = ROIStartY - 15 if ROIStartY - 15 > 15 else ROIStartY + 15
+			cv2.putText(frame, "Detection Zone", (ROIStartX, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
 			# loop over the detections
 			for i in np.arange(0, detections.shape[2]):
@@ -150,15 +154,6 @@ while StreamLoaded == "False":
 							y = startY + ROIStartY - 15 if startY + ROIStartY - 15 > 15 else startY + ROIStartY + 15
 							cv2.putText(frame, label, (startX + ROIStartX, y),
 								cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2)
-			
-					#Draw a box around the area being monitor for Objects
-					color = (255, 0, 0) # Blue color in BGR 
-					start_point = (ROIStartX, ROIStartY)
-					end_point = (ROIEndX, ROIEndY)
-					thickness = 2
-					frame = cv2.rectangle(frame, start_point, end_point, color, thickness)	
-					y = ROIStartY - 15 if ROIStartY - 15 > 15 else ROIStartY + 15
-					cv2.putText(frame, "Detection Zone", (ROIStartX, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
 					#alert for detection
 					#print(label)
@@ -168,7 +163,7 @@ while StreamLoaded == "False":
 							print(label + " Detected")
 							ValidObjectDetected = 'true'
 
-					if(ValidObjectDetected == 'true' and SMSAlertDelay < datetime.datetime.now() and is_time_between(StartAlerts, EndAlerts)):
+					if(ValidObjectDetected == 'true' and is_time_between(StartAlerts, EndAlerts)):
 						print(label + " @ " + str(datetime.datetime.now()))
 
 						#Test for False Alarm by checking X Lenght of the detection area against the detection
@@ -187,28 +182,53 @@ while StreamLoaded == "False":
 						if(DectectionPercentage < ConfigValues.ReturnDectectionPercentage()): #The closer to 100% the detection is the more likely it's a false alert. 
 							#Save Image to Disk
 							cv2.imwrite(Image_Path, frame)
-							#Send SMS
-							if(ConfigValues.ReturnTwilioSMSEnabled() == 'true'):
-								PhoneDestination = ConfigValues.ReturnAlertPhoneDestination()
-								for PD in PhoneDestination:
-									Send_SMS(label + " at: " + args["name"], PD)
-							print("SMS Alerts Sent")
-							#Send MMS
-							#Upload image to dropbox and generate a public sharing URL
-							URL = UploadToDropBox(Image_Name)
-							print("Image Uploaded to Dropbox")
-							print(URL)
-							if(ConfigValues.ReturnTwilioMMSEnabled() == 'true'):
-								PhoneDestination = ConfigValues.ReturnAlertPhoneDestination()
-								for PD in PhoneDestination:
-									Send_MMS(label + " at: " + args["name"], PD, URL) 
-							print("MMS Alerts Sent")
-							#Email image of the detection
-							if(ConfigValues.ReturnMailEnabled() == 'true'):
-								Send_Mail(Image_Path, args["name"], label)
-							#Set Alert Delay Period before a new alert can be sent
-							SMSAlertDelay = datetime.datetime.now() + datetime.timedelta(minutes=AlertSleepPeriod)
-							print("Alerts Sleeping " + str(AlertSleepPeriod) + " minutes")
+
+							SkipFaceDetection = 'false'
+
+
+							if(SMSAlertDelay < datetime.datetime.now()):
+								#Send SMS
+								if(ConfigValues.ReturnTwilioSMSEnabled() == 'true'):
+									PhoneDestination = ConfigValues.ReturnAlertPhoneDestination()
+									for PD in PhoneDestination:
+										Send_SMS(label + " at: " + args["name"], PD)
+									print("SMS Alerts Sent")
+								#Send MMS
+							
+								#Upload image to dropbox and generate a public sharing URL
+								URL = UploadToDropBox(Image_Name)
+								print("DropBox Image Public Share URL: " + str(URL))
+
+								#Send MMS
+								if(ConfigValues.ReturnTwilioMMSEnabled() == 'true'):
+									PhoneDestination = ConfigValues.ReturnAlertPhoneDestination()
+									for PD in PhoneDestination:
+										Send_MMS(label + " at: " + args["name"], PD, URL) 
+									print("MMS Alerts Sent")
+								#Email image of the detection
+								if(ConfigValues.ReturnMailEnabled() == 'true'):
+									Send_Mail(Image_Path, args["name"], label)
+								#Set Alert Delay Period before a new alert can be sent
+								SMSAlertDelay = datetime.datetime.now() + datetime.timedelta(minutes=AlertSleepPeriod)
+								loop = 0
+								print("Alerts Sleeping " + str(AlertSleepPeriod) + " minutes")
+								SkipFaceDetection = 'true'
+							else:
+								SkipFaceDetection = 'false'
+
+							#FaceDetection
+							if(ConfigValues.ReturnFaceDetectionEnabled()=='true' and FaceDetectionDelay < datetime.datetime.now() and SkipFaceDetection=='false'):
+								print('FaceDetection Enabled')
+								#[startY:endY, startX:endX]
+								# (startX + ROIStartX, startY + ROIStartY), (endX  + ROIStartX, endY  + ROIStartY)
+								roiDetected = frame[(startY + ROIStartY):(endY  + ROIStartY), (startX + ROIStartX):(endX  + ROIStartX)]
+								cv2.imshow("FaceFrame", roiDetected)
+								#(startX + ROIStartX, startY + ROIStartY), (endX  + ROIStartX, endY  + ROIStartY)
+								key = cv2.waitKey(1) & 0xFF
+								FaceFound = FaceDetection.FaceDetection(roiDetected)
+								if(FaceFound=='true'):
+									FaceDetectionDelay = SMSAlertDelay
+							
 						else:
 							print("")
 							print("False Detection Occured Detection Percentage: " + str(DectectionPercentage))
@@ -240,6 +260,8 @@ while StreamLoaded == "False":
 	except:
 		print("")
 		print("Oops!, RTSP Stream Error ", sys.exc_info()[0])
+		cv2.destroyAllWindows()
+		vs.stop()
 		print ("Attempting to re-aquire Stream")
 		print("")
 		#stop the timer and display FPS information
@@ -252,4 +274,3 @@ cv2.destroyAllWindows()
 vs.stop()
 print(args["name"] + " has exited. This window is safe to close" )
 
-#ObjectDetection()

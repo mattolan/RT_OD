@@ -17,9 +17,9 @@ def UploadToDropBox(filename):
         filepath = folder / filename  # path object, defining the file
 
         #target location in Dropbox
-        #target = "/Detection/"              # the target folder
-        #targetfile = target + filename #datetime.datetime.today().strftime('%d-%m-%Y-%H-%M-%S')  # the target path and file name
-        
+        print("/Detection/"  + str(datetime.datetime.today().strftime('%d-%m-%Y-%H-%M-%S')))
+        print(filename)
+
         newfilename = "/Detection/"  + str(datetime.datetime.today().strftime('%d-%m-%Y-%H-%M-%S')) + filename
         targetfile = newfilename
 
