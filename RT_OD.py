@@ -1,4 +1,5 @@
 # import the necessary packages
+import sys
 from imutils.video import VideoStream
 from imutils.video import FPS
 import numpy as np
@@ -62,46 +63,48 @@ CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat",
 	"sofa", "train", "tvmonitor"]
 #only display this list of classes on the image windows
 ClassesToDisplay =["bicycle", "car", "cat",	"dog", "motorbike", "person", "pottedplant", "boat"]
-COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
+#COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
 
-# load our serialized model from disk
-print("[INFO] loading model...")
-net = cv2.dnn.readNetFromCaffe(Prototxt, Model)
-
-# check if we are going to use GPU
-if args["use_gpu"]:
-	# set CUDA as the preferable backend and target
-	print("[INFO] setting preferable backend and target to CUDA...")
-	net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
-	net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
-
-# initialize the video stream, allow the cammera sensor to warmup,
-# and initialize the FPS counter
-print("[INFO] starting video stream..." + args["name"])
-#vs = VideoStream(src=0).start()
 StreamLoaded = "False"
 while StreamLoaded == "False":
+	COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
+
+	
+	# load our serialized model from disk
+	print("[INFO] loading model...")
+	net = cv2.dnn.readNetFromCaffe(Prototxt, Model)
+
+	# check if we are going to use GPU
+	if args["use_gpu"]:
+		# set CUDA as the preferable backend and target
+		print("[INFO] setting preferable backend and target to CUDA...")
+		net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
+		net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
+
+	# initialize the video stream, allow the cammera sensor to warmup,
+	# and initialize the FPS counter
+	#print("[INFO] starting video stream..." + args["name"])
+
+	print("[INFO] starting video stream..." + args["name"])
 	try:
 		RTSP_URL=args["video"]
 		vs = VideoStream(RTSP_URL).start()
-		t.sleep(2.0)
 		fps = FPS().start()
-	
+		
 		#Set Date to prevent SMS Flood
 		#import datetime
 		SMSAlertDelay = datetime.datetime.now()
 		FaceDetectionDelay = datetime.datetime.now()
 
 		# loop over the frames from the video stream
-		print("[INFO] video stream loaded")
-		print("[INFO] starting object detection processing")
+		print("[INFO] attempting video stream loading")
+		#print("[INFO] starting object detection processing")
 		while True:
 			t.sleep(FrameSleep)
 			# grab the frame from the threaded video stream and resize it
 			# to have a maximum width of 800 pixels
 			frame = vs.read()
 			#frame = imutils.resize(frame, width=800) #defines the size of the picture
-
 			#Grab ROI
 			#[startY:endY, startX:endX]
 			roi = frame[ROIStartY:ROIEndY, ROIStartX:ROIEndX]
@@ -109,7 +112,6 @@ while StreamLoaded == "False":
 
 			# grab the frame dimensions and convert it to a blob
 			(h, w) = roi.shape[:2]
-			#blob = cv2.dnn.blobFromImage(image, scalefactor=1.0, size, mean, swapRB=True)
 			blob = cv2.dnn.blobFromImage(cv2.resize(roi, (300, 300)),0.007843, (300, 300), 127.5)
 			#blob = cv2.dnn.blobFromImage(roi,1(300, 300), 127.5)
 			# pass the blob through the network and obtain the detections and
@@ -170,19 +172,13 @@ while StreamLoaded == "False":
 						print("")
 						print("Check for False Detection")
 						DetectionAreaXLength = args["ROIEX"] - args["ROISX"]
-						#print(DetectionAreaXLength)
 						DetectionEventXLength = endX - startX
-						#print(DetectionEventXLength)
 						DectectionPercentage = DetectionEventXLength/DetectionAreaXLength*100
-						#print(DectectionPercentage)
-						#print("End Check")
-						#print("")
 						#End Test
 				
 						if(DectectionPercentage < ConfigValues.ReturnDectectionPercentage()): #The closer to 100% the detection is the more likely it's a false alert. 
 							#Save Image to Disk
 							cv2.imwrite(Image_Path, frame)
-
 							SkipFaceDetection = 'false'
 
 
@@ -220,11 +216,16 @@ while StreamLoaded == "False":
 							if(ConfigValues.ReturnFaceDetectionEnabled()=='true' and FaceDetectionDelay < datetime.datetime.now() and SkipFaceDetection=='false'):
 								print('FaceDetection Enabled')
 								#[startY:endY, startX:endX]
-								# (startX + ROIStartX, startY + ROIStartY), (endX  + ROIStartX, endY  + ROIStartY)
 								roiDetected = frame[(startY + ROIStartY):(endY  + ROIStartY), (startX + ROIStartX):(endX  + ROIStartX)]
 								cv2.imshow("FaceFrame", roiDetected)
-								#(startX + ROIStartX, startY + ROIStartY), (endX  + ROIStartX, endY  + ROIStartY)
 								key = cv2.waitKey(1) & 0xFF
+								
+								#Save Image to Disk
+								cv2.imwrite(Image_Path, roiDetected)
+								#Upload image to dropbox and generate a public sharing URL
+								URL = UploadToDropBox(Image_Name)
+								print("DropBox Image Public Share URL: " + str(URL))
+
 								FaceFound = FaceDetection.FaceDetection(roiDetected)
 								if(FaceFound=='true'):
 									FaceDetectionDelay = SMSAlertDelay
@@ -247,7 +248,7 @@ while StreamLoaded == "False":
 				break
 			# update the FPS counter
 			fps.update()
-	
+				
 		#stop the timer and display FPS information
 		fps.stop()
 		print("[INFO] elapsed time: {:.2f}".format(fps.elapsed()))
@@ -259,18 +260,23 @@ while StreamLoaded == "False":
 
 	except:
 		print("")
-		print("Oops!, RTSP Stream Error ", sys.exc_info()[0])
-		cv2.destroyAllWindows()
-		vs.stop()
-		print ("Attempting to re-aquire Stream")
-		print("")
+		print("Oops!, ", sys.exc_info()[0])
+		StreamLoaded = "False"
+
 		#stop the timer and display FPS information
 		fps.stop()
 		print("[INFO] elapsed time: {:.2f}".format(fps.elapsed()))
 		print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
 
+		cv2.destroyAllWindows()
+		vs.stop()
+		print ("Attempting to re-aquire Stream")
+		print("")
+		#t.sleep(5)
+		#sys.modules[__name__].__dict__.clear()
+
 # do a bit of cleanup
 cv2.destroyAllWindows()
-vs.stop()
+#vs.stop()
 print(args["name"] + " has exited. This window is safe to close" )
 
