@@ -1,26 +1,20 @@
-#Rename this file to "ConfigValues.py" it is required for the project to function.
-#update the below contect with your account credentials and keys
-
 #Drop Box Config
-DropBoxAPIKey = '' #only required if using MMS
+DropBoxAPIKey = "keHszsFAF5AAAAAAAAAALAwDlF7AqJEvkc6INAkZGblencv9gJgjQar0Je0ua5TY" #only required if using MMS
 
 #Email Config
-SMTPPort = 587 #SMPT Server Port
-SMTPServer = 'smtp.gmail.com' #SMTP Server Address
-SMTPLogin = '' # paste your login 
-SMTPPassword = '' #paste your password 
-SMTPToAddress = '' #destination address Email will be sent to
+SMTPPort = 587
+SMTPServer = ""
+SMTPLogin = "" # paste your login 
+SMTPPassword = "" # paste your password 
+SMTPToAddress = ""
 MailEnabled = 'false' #If set to false the other email config values can be left blank
 
 #Twilio MMS & SMS Config
 TwilioSID = ''
 TwilioAuthToken = ''
-TwilioSourcePhone = '+' + '<%Source Phone Number%>'  #phone number is required to have '+' appended to the start
+TwilioSourcePhone = '+' + ''
 TwilioSMSEnabled = 'false' #setting to false will still allow SMS to be uses as a failback to MMS
-TwilioMMSEnabled = 'true' #if SMS and MMS are set to false the other email config values can be left blanks
-
-#Destination number for MMS & SMS notifications
-AlertPhoneDestination = ['+1' + '3335557777', '+1' + '1112223333'] #list comma seperated add phone numbers as desired for notification, phone number is required to have '+1' appended to the start
+TwilioMMSEnabled = 'false' #if SMS and MMS are set to false the other email config values can be left blanks
 
 #RT_OD Real Time Object Detection Config
 
@@ -33,7 +27,18 @@ RTODSystemConfidence = 0.2 #minimum probability to filter weak detections
 RTODFrameSleep = 0.25
 #Detection Percentage - used to filter out eronious false detections that occur the closer to 100% of the detection area the more probable a
 #detection is a false alert. 
-DectectionPercentage = 75
+DectectionPercentage = 60
+#Alert On What Object Type
+#Options Are
+    #["background", "aeroplane", "bicycle", "bird", "boat",	"bottle", "bus", "car", "cat", "chair", "cow", "diningtable",
+	#"dog", "horse", "motorbike", "person", "pottedplant", "sheep",	"sofa", "train", "tvmonitor"]
+AlertObjectType = ["person", "car"]
+
+#Enable Face Detection
+FaceDetectionEnabled = 'true'
+
+#Destination number for MMS & SMS notifications
+AlertPhoneDestination = ['+' + '1234567890', '+' + '1234567890'] #list , seperated add phone numbers are desired
 
 #Definitions to return the desired config values from above
 def ReturnDropBoxAPIKey():
@@ -89,6 +94,12 @@ def ReturnAlertPhoneDestination():
 
 def ReturnDectectionPercentage():
     return DectectionPercentage
+
+def ReturnAlertObjectType():
+    return AlertObjectType
+
+def ReturnFaceDetectionEnabled():
+    return FaceDetectionEnabled
 
 def ReturnAlertPhoneDestination2():
     return AlertPhoneDestination2
