@@ -1,5 +1,5 @@
 #Drop Box Config
-DropBoxAPIKey = "keHszsFAF5AAAAAAAAAALAwDlF7AqJEvkc6INAkZGblencv9gJgjQar0Je0ua5TY" #only required if using MMS
+DropBoxAPIKey = "" #only required if using MMS
 
 #Email Config
 SMTPPort = 587
